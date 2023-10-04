@@ -51,11 +51,11 @@ python ../datafold_ci.py
 
 # output example
 Getting latest job run artifacts [manifest.json] for job id: 428271
-File written to: /Users/sung/api-demo/dbt_bigquery_example/manifest.json
+    File written to: /Users/sung/api-demo/dbt_bigquery_example/manifest.json
 Getting latest job run artifacts [run_results.json] for job id: 428275
-File written to: /Users/sung/api-demo/dbt_bigquery_example/target/run_results.json
+    File written to: /Users/sung/api-demo/dbt_bigquery_example/target/run_results.json
 Getting latest job run artifacts [manifest.json] for job id: 428275
-File written to: /Users/sung/api-demo/dbt_bigquery_example/target/manifest.json
+    File written to: /Users/sung/api-demo/dbt_bigquery_example/target/manifest.json
 Running with data-diff=0.8.4 (Update 0.9.1 is available!)
 Cloud datafold host: https://app.datafold.com
 Saving the API key to the system keyring service
@@ -73,6 +73,7 @@ stg_payments: https://app.datafold.com/datadiffs/2262838/overview
 
 dbt-demo-386220.dbt_sung_prod.fct_orders <> 
 dbt-demo-386220.dbt_cloud_pr_ALPHANUMERIC_CHANGE_BRANCH_CHANGE_ID_BUILD_NUMBER_428275.fct_orders 
+Column(s) added: ['new_column']
 
 https://app.datafold.com/datadiffs/2262836/overview
  
