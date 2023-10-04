@@ -1,4 +1,4 @@
-# public-sapi-demo
+# public-api-demos
 
 ## Description
 Demo to show how to use the Datafold API to run data diffs in CI pipelines in all kinds of ways.
