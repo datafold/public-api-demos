@@ -23,18 +23,21 @@ source venv/bin/activate
 pip install -r requirements.txt
 source venv/bin/activate
 
-### test in a personal repo
+# test in a personal repo, this example will not work automatically unless you have a GCP service account
 git clone https://github.com/sungchun12/dbt_bigquery_example.git
 cd dbt_bigquery_example
 git checkout demo/bigquery-pr
 ```
 
-```shell
+```yaml
 # add these Datafold configs to your `dbt_project.yml`
+vars:
+  data_diff:
+    datasource_id: 6575 # found in the Datafold Data Sources Settings Page
 ```
 
 ```shell
-# export env vars for a local run
+# export env vars for a local run, few examples below
 # you'll inject these in the jenkins file, these are exported locally for testing
 export DBT_CLOUD_PRODUCTION_JOB_ID=<your_dbt_cloud_job_id>
 export DATAFOLD_API_KEY=<your_datafold_api_key>
@@ -46,6 +49,7 @@ export DATA_SOURCE_ID=<your_data_source_id>
 # run the script
 python ../datafold_ci.py
 
+# output example
 Getting latest job run artifacts [manifest.json] for job id: 428271
 File written to: /Users/sung/api-demo/dbt_bigquery_example/manifest.json
 Getting latest job run artifacts [run_results.json] for job id: 428275
