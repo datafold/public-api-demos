@@ -58,7 +58,7 @@ def get_job_run_id_artifacts(job_id, artifact_name="manifest.json", path="./") -
 
     with open(os.path.join(path, artifact_name), "w") as outfile:
         json.dump(response_payload, outfile)
-        print(f"File written to: {os.path.abspath(outfile.name)}")
+        print(f"    File written to: {os.path.abspath(outfile.name)}")
 
 
 if __name__ == "__main__":
