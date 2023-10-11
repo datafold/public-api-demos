@@ -1,0 +1,4 @@
+requests==2.31.0
+termcolor==2.3.0
+halo==0.0.31
+pydantic==2.4.2
