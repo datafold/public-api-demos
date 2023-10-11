@@ -1,10 +1,10 @@
 """
-Demo script to run a Datafold data diff in BigQuery with simple API calls
+Demo script to run a Datafold data diff in Snowflake with simple API calls
 """
 
 import os
 import time
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, field_validator
 from typing import Any, List
 import requests
 from tabulate import tabulate
@@ -19,11 +19,11 @@ datafold_api_key = os.getenv(
 )  # replace with your own Datafold API key
 
 # TODO: replace with your own data diff configs
-data_source1_id = 6575  # replace with your own data source id
-data_source2_id = 6575  # replace with your own data source id
-table1 = ["dbt-demo-386220", "dbt_bq_example", "fct_orders"]
-table2 = ["dbt-demo-386220", "dbt_sung", "fct_orders"]
-pk_columns = ["order_id"]  # replace with your own primary key columns
+data_source1_id = 4932  # replace with your own data source id
+data_source2_id = 4932  # replace with your own data source id
+table1 = ["DEMO", "CORE", "DIM_ORGS"]
+table2 = ["DEMO", "PR", "DIM_ORGS"]
+pk_columns = ["ORG_ID"]  # replace with your own primary key columns
 
 
 class DataDiffConfigs(BaseModel):
@@ -33,7 +33,7 @@ class DataDiffConfigs(BaseModel):
     table2: List[str]
     pk_columns: List[str]
 
-    @validator("table1", "table2")
+    @field_validator("table1", "table2")
     def validate_table(cls, value):
         if len(value) != 3:
             raise ValueError(
