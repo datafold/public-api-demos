@@ -32,6 +32,6 @@ jobs:
         run: echo '[{ "prod":"DEMO.CORE.DIM_ORGS", "pr":"DEMO.PR.DIM_ORGS", "pk":["ORG_ID"] }]' > ./diffs.txt
 
       - name: Invoke Datafold CI Run
-        run: datafold ci submit --ci-config-id 287 --pr-num ${{ steps.findPr.outputs.pr }} --diffs ./diffs.txt
+        run: datafold ci submit --ci-config-id 287 --pr-num ${{ steps.findPr.outputs.pr }} --diffs ./diffs.txt 
         env:
           DATAFOLD_API_KEY: ${{ secrets.DATAFOLD_API_KEY }}
