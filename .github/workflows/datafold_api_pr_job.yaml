@@ -1,0 +1,34 @@
+name: CI for MWAA Staging
+
+on:
+  pull_request:
+    types:
+    - opened
+    - reopened
+    - synchronize
+    - ready_for_review
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: install Datafold SDK
+      id: install-reqs
+      run: pip install datafold-sdk
+
+    - uses: actions/checkout@main
+    - uses: jakejarvis/s3-sync-action@master
+      with:
+        args: --acl private --follow-symlinks --delete --exclude '.git/*'
+
+    - uses: jwalton/gh-find-current-pr@v1.3.0
+      id: findPR
+    
+    - name: Store diffs in file
+      run: echo '[{ "prod":"DEMO.DATAFOLD_AIRFLOW.FORESTFIRES", "pr":"DEMO.DATAFOLD_AIRFLOW_PR_NUM_${{ steps.findPr.outputs.pr }}.FORESTFIRES", "pk":["ID"] }]' > ./diffs.txt
+
+    - name: Kick off Datafold CI Run
+      run: datafold ci submit --ci-config-id 286 --pr-num ${{ steps.findPr.outputs.pr }} --diffs ./diffs.txt
+      env:
+        DATAFOLD_API_KEY: ${{ secrets.DATAFOLD_API_KEY }}
