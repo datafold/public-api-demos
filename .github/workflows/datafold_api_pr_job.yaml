@@ -29,7 +29,7 @@ jobs:
         id: findPR
       
       - name: Store diffs in file # Manual example that can be replaced with a dynamic script
-        run: echo '[{ "prod":"DEMO.CORE.DIM_ORGS", "pr":"DEMO.PR.DIM_ORGS", "pk":["ORG_ID"] }]' > ./diffs.txt
+        run: echo '[{ "prod":"DEMO.CORE.FCT_MONTHLY_FINANCIALS", "pr":"DEMO.PR.FCT_MONTHLY_FINANCIALS", "pk":["ORG_ID"] }]' > ./diffs.txt
 
       - name: Invoke Datafold CI Run
         run: datafold ci submit --ci-config-id 287 --pr-num ${{ steps.findPr.outputs.pr }} --diffs ./diffs.txt
