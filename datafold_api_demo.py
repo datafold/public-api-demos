@@ -125,10 +125,29 @@ class DataDiff:
 
         # Dependencies
         print("\nDependencies:")
-        for key, value in results["dependencies"].items():
-            print(f"{key.capitalize()}:")
-            for subkey, subvalue in value.items():
-                print(f"    {subkey.capitalize()}: {', '.join(map(str, subvalue))}")
+        for key, dependency_dict in results['dependencies'].items():
+            if dependency_dict: # Check if the dictionary is not empty
+                for subkey, item_list in dependency_dict.items():
+                    if item_list: # Check this list is not empty
+                        # get keys of the first dictionary in the list
+                        all_headers = set().union(*(item.keys() for item in item_list))  
+                        data = []
+                        for item in item_list:
+                            row = []
+                            for header in all_headers:
+                                val = item.get(header)
+                                if isinstance(val, list) and len(val) > 0 and isinstance(val[0], dict):
+                                    # assuming each dictionary has a consistent structure
+                                    val = ', '.join([f"{v['name']} ({v['uid']})" for v in val])
+                                row.append(val)
+                            data.append(row)
+                        print(f"\n{subkey.capitalize()} Dependencies:")  # print a subkey name
+                        print(tabulate(data, headers=all_headers, tablefmt='grid'))  # print a table
+                    else:
+                        print(f"\n{subkey.capitalize()} Dependencies are not available.")  # print the message for empty lists
+            else:
+                print(f"\n{key.capitalize()} Dependencies are not available.")
+
         
         # Schema
         headers_schema = ["Stats", data_diff_configs.table1, data_diff_configs.table2]
