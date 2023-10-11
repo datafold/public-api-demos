@@ -1,4 +1,4 @@
-name: CI for MWAA Staging
+name: Datafold API Pull Request Job
 
 on:
   pull_request:
@@ -12,23 +12,27 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: checkout
+        uses: actions/checkout@v2
 
-    - name: install Datafold SDK
-      id: install-reqs
-      run: pip install datafold-sdk
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
 
-    - uses: actions/checkout@main
-    - uses: jakejarvis/s3-sync-action@master
-      with:
-        args: --acl private --follow-symlinks --delete --exclude '.git/*'
+      - name: install requirements
+        run: pip install -q -r requirements.txt
 
-    - uses: jwalton/gh-find-current-pr@v1.3.0
-      id: findPR
-    
-    - name: Store diffs in file
-      run: echo '[{ "prod":"DEMO.DATAFOLD_AIRFLOW.FORESTFIRES", "pr":"DEMO.DATAFOLD_AIRFLOW_PR_NUM_${{ steps.findPr.outputs.pr }}.FORESTFIRES", "pk":["ID"] }]' > ./diffs.txt
+      - name: install datafold-sdk
+        run: pip install -q datafold-sdk
 
-    - name: Kick off Datafold CI Run
-      run: datafold ci submit --ci-config-id 286 --pr-num ${{ steps.findPr.outputs.pr }} --diffs ./diffs.txt
-      env:
-        DATAFOLD_API_KEY: ${{ secrets.DATAFOLD_API_KEY }}
+      - name: Find Current Pull Request
+        uses: jwalton/gh-find-current-pr@v1.3.0
+        id: findPR
+      
+      - name: Store diffs in file # Manual example that can be replaced with a dynamic script
+        run: echo '[{ "prod":"DEMO.CORE.DIM_ORGS", "pr":"DEMO.CORE.DIM_ORGS", "pk":["ORG_ID"] }]' > ./diffs.txt
+
+      - name: Invoke Datafold CI Run
+        run: datafold ci submit --ci-config-id 287 --pr-num ${{ steps.findPr.outputs.pr }} --diffs ./diffs.txt
+        env:
+          DATAFOLD_API_KEY: ${{ secrets.DATAFOLD_API_KEY }}
