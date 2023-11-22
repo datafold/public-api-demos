@@ -1,0 +1,37 @@
+name: Datafold API Pull Request Job
+
+on:
+  pull_request:
+    types:
+    - opened
+    - reopened
+    - synchronize
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      - name: install requirements
+        run: pip install -q -r requirements.txt
+
+      - name: install datafold-sdk
+        run: pip install -q datafold-sdk
+
+      - name: Find Current Pull Request
+        uses: jwalton/gh-find-current-pr@v1.3.0
+        id: findPR
+      
+      - name: Store diffs in file # Manual example that can be replaced with a dynamic script
+        run: echo '[{ "prod":"DEMO.CORE.DIM_ORGS", "pr":"DEMO.PR.DIM_ORGS", "pk":["ORG_ID"] }]' > ./diffs.txt
+
+      - name: Invoke Datafold CI Run
+        run: datafold ci submit --ci-config-id 287 --pr-num ${{ steps.findPr.outputs.pr }} --diffs ./diffs.txt 
+        env:
+          DATAFOLD_API_KEY: ${{ secrets.DATAFOLD_API_KEY }}
