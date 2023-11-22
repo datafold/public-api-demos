@@ -1,0 +1,1 @@
+[{ "prod":"DEMO.CORE.DIM_ORGS", "pr":"DEMO.PR.DIM_ORGS", "pk":["ORG_ID"] }]

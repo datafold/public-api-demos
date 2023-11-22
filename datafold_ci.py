@@ -30,7 +30,7 @@ def main():
     get_job_run_id_artifacts(JOB_ID, artifact_name="manifest.json", path="./target/")
     # run Datafold Cloud data diff and point to the production manifest.json to compare against
     subprocess.run(
-        ["data-diff", "--dbt", "--cloud", "--state", "manifest.json"],
+        ["data-diff", "--dbt", "--cloud", "--state", "manifest.json", "--no-tracking", "--debug"],
         env=env_vars,
         check=True,
     )
